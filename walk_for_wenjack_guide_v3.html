@@ -1,0 +1,205 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  .app { background: #0a0a14; color: #fff; min-height: 100vh; }
+  .header { background: #0a0a14; padding: 20px 16px 12px; border-bottom: 1px solid #1e1a3a; }
+  .logo-row { display: flex; align-items: center; gap: 0; margin-bottom: 14px; }
+  .accenture-logo { display: inline-flex; align-items: flex-end; position: relative; }
+  .accenture-wordmark { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.02em; font-family: Arial, sans-serif; line-height: 1; }
+  .accenture-chevron { position: relative; display: inline-block; margin-left: 2px; margin-bottom: 12px; }
+  .tagline { font-size: 11px; color: #7a66c4; letter-spacing: 0.12em; margin-bottom: 14px; }
+  .title-block h1 { font-size: 28px; font-weight: 300; color: #fff; line-height: 1.1; }
+  .title-block h1 span { color: #8b6fe8; font-weight: 600; }
+  .subtitle { font-size: 12px; color: #999; font-style: italic; margin-top: 4px; }
+  .meta { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+  .meta-row { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #ccc; }
+  .meta-row i { color: #8b6fe8; font-size: 14px; }
+
+  .map-section { padding: 16px; }
+  .map-label { font-size: 10px; letter-spacing: 0.14em; color: #7a66c4; margin-bottom: 8px; }
+  .map-container { border-radius: 10px; overflow: hidden; border: 1px solid #2a2050; }
+  .map-fallback { width: 100%; height: 260px; background: #12102a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
+  .map-badge { background: #1c1640; border: 1px solid #2a2050; border-radius: 8px; padding: 10px 16px; text-align: center; }
+  .map-badge p { font-size: 11px; color: #888; margin-bottom: 8px; }
+  .map-link { display: inline-block; background: #8b6fe8; color: #fff; font-size: 12px; padding: 7px 16px; border-radius: 6px; text-decoration: none; font-weight: 500; }
+  .map-stops-list { font-size: 10px; color: #444; text-align: center; max-width: 240px; line-height: 1.7; }
+  .map-stats { display: flex; background: #12102a; }
+  .stat { flex: 1; padding: 10px 0; text-align: center; border-right: 1px solid #1e1a3a; }
+  .stat:last-child { border-right: none; }
+  .stat-val { font-size: 15px; font-weight: 600; color: #8b6fe8; }
+  .stat-lbl { font-size: 9px; color: #666; letter-spacing: 0.1em; margin-top: 2px; }
+
+  .stops-section { padding: 0 16px 24px; }
+  .section-label { font-size: 10px; letter-spacing: 0.14em; color: #7a66c4; margin-bottom: 14px; }
+
+  .stop-item { display: flex; gap: 12px; margin-bottom: 4px; position: relative; }
+  .stop-num { width: 32px; height: 32px; border-radius: 50%; background: #8b6fe8; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 2px; }
+  .stop-dot { width: 32px; height: 32px; border-radius: 8px; background: #1c1640; border: 1px solid #2a2050; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+  .stop-dot i { color: #8b6fe8; font-size: 14px; }
+  .stop-content { flex: 1; padding-bottom: 16px; }
+  .stop-location { font-size: 9px; letter-spacing: 0.12em; color: #7a66c4; margin-bottom: 3px; }
+  .stop-name { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 6px; line-height: 1.2; }
+  .stop-desc { font-size: 12px; color: #aaa; line-height: 1.65; }
+  .stop-desc.collapsed { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .read-more { font-size: 11px; color: #8b6fe8; cursor: pointer; margin-top: 5px; display: inline-block; background: none; border: none; padding: 0; }
+
+  .connector { display: flex; gap: 12px; margin-bottom: 4px; }
+  .connector-line-wrap { width: 32px; display: flex; justify-content: center; flex-shrink: 0; }
+  .connector-line { width: 2px; background: repeating-linear-gradient(to bottom, #3a2f7a 0, #3a2f7a 4px, transparent 4px, transparent 8px); flex: 1; min-height: 32px; }
+  .connector-label { flex: 1; font-size: 10px; color: #555; padding: 6px 0; align-self: center; }
+
+  .footer { background: #8b6fe8; padding: 12px 16px; text-align: center; }
+  .footer-text { font-size: 10px; letter-spacing: 0.15em; color: rgba(255,255,255,0.85); }
+  .footer-text strong { color: #fff; }
+</style>
+
+<div class="app">
+  <div class="header">
+    <div class="logo-row">
+      <!-- Accenture logo: wordmark + SVG chevron above the t -->
+      <div style="display:inline-block; position:relative;">
+        <svg width="140" height="44" viewBox="0 0 140 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Accenture">
+          <!-- Purple chevron ">" above the t -->
+          <polygon points="78,2 91,10 78,18 83,10" fill="#A100FF"/>
+          <!-- wordmark -->
+          <text x="0" y="38" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="26" fill="#ffffff" letter-spacing="-0.5">accenture</text>
+        </svg>
+      </div>
+    </div>
+    <div class="tagline">TRUTH · RESPECT · RECONCILIACTION</div>
+    <div class="title-block">
+      <h1>Walk for<br><span>Wenjack</span></h1>
+      <div class="subtitle">Learn. Reflect. Take Action.</div>
+    </div>
+    <div class="meta">
+      <div class="meta-row"><i class="ti ti-calendar" aria-hidden="true"></i>Wednesday, October 7 · 4:30 PM – 6:30 PM</div>
+      <div class="meta-row"><i class="ti ti-map-pin" aria-hidden="true"></i>Start & end: 150 Elgin Street, Ottawa</div>
+      <div class="meta-row"><i class="ti ti-walk" aria-hidden="true"></i>Guided walk · 1.9 km · ~29 min</div>
+    </div>
+  </div>
+
+  <div class="map-section">
+    <div class="map-label">ROUTE MAP</div>
+    <div class="map-container">
+      <div class="map-fallback">
+        <i class="ti ti-map-2" style="font-size:36px;color:#3a2f7a" aria-hidden="true"></i>
+        <div class="map-badge">
+          <p>Tap to open the live walking route in Google Maps</p>
+          <a class="map-link" href="https://www.google.com/maps/dir/150+Elgin+St,+Ottawa,+ON+K2P+2P8/Centennial+Flame,+111+Wellington+St,+Ottawa/Rideau+Canal+Locks+1-8,+Ottawa/Kwakiutl+Totem,+Confederation+Private,+Ottawa/National+Aboriginal+Veterans+Monument,+Ottawa/150+Elgin+St,+Ottawa,+ON+K2P+2P8" target="_blank">
+            <i class="ti ti-external-link" aria-hidden="true"></i> Open route in Maps
+          </a>
+        </div>
+        <div class="map-stops-list">
+          150 Elgin St → Centennial Flame → Rideau Canal Locks<br>→ Kwakiutl Totem → Veterans Monument → 150 Elgin St
+        </div>
+      </div>
+    </div>
+    <div class="map-stats">
+      <div class="stat"><div class="stat-val">1.9 km</div><div class="stat-lbl">DISTANCE</div></div>
+      <div class="stat"><div class="stat-val">~29 min</div><div class="stat-lbl">WALK TIME</div></div>
+      <div class="stat"><div class="stat-val">4 stops</div><div class="stat-lbl">ON THE ROUTE</div></div>
+    </div>
+  </div>
+
+  <div class="stops-section">
+    <div class="section-label">ROUTE GUIDE</div>
+
+    <div class="stop-item">
+      <div class="stop-dot"><i class="ti ti-building-skyscraper" aria-hidden="true"></i></div>
+      <div class="stop-content">
+        <div class="stop-name">150 Elgin St — Office</div>
+        <div class="stop-desc">Starting point. Meet here before the walk begins.</div>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line-wrap"><div class="connector-line"></div></div>
+      <div class="connector-label">North on Elgin St to Parliament Hill</div>
+    </div>
+
+    <div class="stop-item">
+      <div class="stop-num">1</div>
+      <div class="stop-content">
+        <div class="stop-location">PARLIAMENT HILL LAWN</div>
+        <div class="stop-name">Centennial Flame</div>
+        <div class="stop-desc collapsed" id="desc1">We stand at the Centennial Flame, a monument built to celebrate Canada's Confederation. While it symbolizes the political joining of provinces and territories — represented by the 13 shields surrounding the water — it also serves as a vital reminder of what was left out of that original foundation. As we walk for Chanie Wenjack and the thousands of Indigenous children impacted by the residential school system, this flame reminds us that true unity cannot exist without truth, justice, and the recognition of Indigenous sovereignty. Let this fire light our collective responsibility to dismantle systemic harms and build a future rooted in genuine reconciliation and respect for the original caretakers of this land.</div>
+        <button class="read-more" onclick="toggleDesc('desc1',this)">Read more</button>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line-wrap"><div class="connector-line"></div></div>
+      <div class="connector-label">Southeast via Laurier Ave to Rideau Canal</div>
+    </div>
+
+    <div class="stop-item">
+      <div class="stop-num">2</div>
+      <div class="stop-content">
+        <div class="stop-location">RIDEAU CANAL</div>
+        <div class="stop-name">Rideau Canal Locks</div>
+        <div class="stop-desc collapsed" id="desc2">The Rideau Canal has connected communities for generations and reminds us of the waterways that sustained Indigenous peoples long before Confederation. As we conclude our Walk for Wenjack, this gathering place offers an opportunity for reflection, learning, and commitment. Reconciliation is not a destination but an ongoing journey that requires listening, action, and meaningful relationships with Indigenous communities.</div>
+        <button class="read-more" onclick="toggleDesc('desc2',this)">Read more</button>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line-wrap"><div class="connector-line"></div></div>
+      <div class="connector-label">West along Queen St to Confederation Park</div>
+    </div>
+
+    <div class="stop-item">
+      <div class="stop-num">3</div>
+      <div class="stop-content">
+        <div class="stop-location">CONFEDERATION PARK</div>
+        <div class="stop-name">Kwakiutl Totem Pole</div>
+        <div class="stop-desc collapsed" id="desc3">This Kwakiutl Totem Pole, carved by master artist Henry Hunt, was gifted by British Columbia in 1971 to mark a milestone in Canada's political history. But as we stand before it today on our Walk for Wenjack, we see it through a much deeper lens. For generations, the Canadian government banned potlatches and actively tried to suppress Indigenous languages, spiritual traditions, and the carving of totem poles. Standing tall here in the heart of the nation's capital, this pole is a monumental symbol of cultural survival, resilience, and reclamation. It reminds us that despite every attempt by the residential school system to erase Indigenous identity, the culture, stories, and spirit of Indigenous communities remain unbroken, vibrant, and foundational to this land.</div>
+        <button class="read-more" onclick="toggleDesc('desc3',this)">Read more</button>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line-wrap"><div class="connector-line"></div></div>
+      <div class="connector-label">South on Elgin St to Confederation Square</div>
+    </div>
+
+    <div class="stop-item">
+      <div class="stop-num">4</div>
+      <div class="stop-content">
+        <div class="stop-location">CONFEDERATION SQUARE</div>
+        <div class="stop-name">National Aboriginal Veterans Monument</div>
+        <div class="stop-desc collapsed" id="desc4">This monument honors the thousands of First Nations, Métis, and Inuit people who volunteered to serve in Canada's armed forces, standing up for freedom abroad while experiencing systemic injustice at home. Designed by Indigenous artist Lloyd Pinay, it represents unity and the deep connection between culture and sacrifice. The four warriors face the cardinal directions, balancing weapons with symbols of peace like the eagle feather. Surrounding them are four spiritual guide animals — the wolf, bear, buffalo, and caribou — representing family, healing, strength, and adaptability. At the peak sits the eagle, symbolizing the Creator and guiding spirit of Indigenous peoples.</div>
+        <button class="read-more" onclick="toggleDesc('desc4',this)">Read more</button>
+      </div>
+    </div>
+
+    <div class="connector">
+      <div class="connector-line-wrap"><div class="connector-line"></div></div>
+      <div class="connector-label">Return north on Elgin St to office</div>
+    </div>
+
+    <div class="stop-item">
+      <div class="stop-dot"><i class="ti ti-building-skyscraper" aria-hidden="true"></i></div>
+      <div class="stop-content">
+        <div class="stop-name">150 Elgin St — Office</div>
+        <div class="stop-desc">Walk complete. Thank you for walking with us.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-text">TRUTH · RESPECT · <strong>RECONCILI<span style="text-decoration:underline">ACTION</span></strong></div>
+  </div>
+</div>
+
+<script>
+function toggleDesc(id, btn) {
+  var el = document.getElementById(id);
+  if (el.classList.contains('collapsed')) {
+    el.classList.remove('collapsed');
+    btn.textContent = 'Show less';
+  } else {
+    el.classList.add('collapsed');
+    btn.textContent = 'Read more';
+  }
+}
+</script>
